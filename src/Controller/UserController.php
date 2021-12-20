@@ -81,13 +81,11 @@ class UserController extends AbstractController
      * @Route("/user/{id}", name="user.delete", methods="DELETE")
      * @param Utilisateur $utilisateur
      */
-    public function delete(Utilisateur $utilisateur, Request $request)
-    {
+    public function delete(Utilisateur $utilisateur){
         
             $this->em->remove($utilisateur);
             $this->em->flush();
-        
-        
+            
         return $this->redirectToRoute('user.index');
     }
 
