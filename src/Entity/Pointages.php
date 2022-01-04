@@ -2,11 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\PointagesRepository;
+use App\Validator as pointHeure;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=PointagesRepository::class)
+ *  @pointHeure\Pointages
  */
 class Pointages
 {
@@ -14,6 +15,7 @@ class Pointages
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     *
      */
     private $id;
 

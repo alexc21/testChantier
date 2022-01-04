@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Pointages;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -11,7 +12,6 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Pointages|null findOneBy(array $criteria, array $orderBy = null)
  * @method Pointages[]    findAll()
  * @method Pointages[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- * @method pointages[]    PointageHeureSemaine
  */
 class PointagesRepository extends ServiceEntityRepository
 {
@@ -19,23 +19,20 @@ class PointagesRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Pointages::class);
     }
-
-     
-    public function PointageHeureSemaine($idUtil, $idChantier)
-    {
-
-
-       return $this->createQueryBuilder('ph')
-       ->where('ph.utilisateur=:utilisateur')
-       ->andWhere('ph.chantier=:chantier')
-       ->setParameter('utilisateur',$idUtil)
-       ->setParameter('chantier',$idChantier)
-       ->getQuery()
-       ->getResult();
-
-    }
     
 
+    public function pointagesHeureSemaine($utilisateur){
+        return $this->createQueryBuilder('phs')
+            ->where('phs.utilisateur = :utilisateur' )
+            ->setParameter('utilisateur', $utilisateur)
+            ->select('sum(phs.duree) as dureeTotalPointage, WEEK( phs.date) as semaine')
+            ->groupBy('phs.date')
+            ->getQuery()
+            ->getScalarResult()
+            ;
+
+
+    }
     /*
     public function findOneBySomeField($value): ?Pointages
     {
